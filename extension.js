@@ -12,7 +12,7 @@ const styleExtensions = [
 
 const getReactFileContent = (filename, styleExtension) => `import React from 'react';
 
-import styles from './${filename}.module${styleExtension}';
+import styles from './${filename[0].toLowerCase()}${filename.slice(1)}.module${styleExtension}';
 
 interface Props {
 }
@@ -32,8 +32,6 @@ const createFiles = (filename, basePath, styleExtension) => {
 	const errors = [];
 
 	const mapError = (err) => errors.push(err);
-
-	console.log({ path: `${basePath}/${filename}` });
 
 	// Create directory
 	fs.mkdirSync(
@@ -56,7 +54,7 @@ const createFiles = (filename, basePath, styleExtension) => {
 
 	// Style module
 	fs.writeFileSync(
-		path.resolve(basePath, filename, `${filename}.module${styleExtension || '.scss'}`),
+		path.resolve(basePath, filename, `${filename[0].toLowerCase()}${filename.slice(1)}.module${styleExtension || '.scss'}`),
 		'',
 		mapError,
 	);
@@ -94,10 +92,20 @@ const activate = (context) => {
 		const directories = getDirectoriesRecursive(currentDirectoryPath);
 		const filteredDirectories = directories
 			.filter((d) => !d.includes('node_modules'))
-			.map((d) => ({
-				label: d.split('/').pop(),
-				detail: d,
-			}));
+			.map((d) => {
+				const currentDirectoryName = currentDirectoryPath.split('/').pop();
+				const directoryPathChunk = d.split('/');
+				const currentPathIndex = directoryPathChunk.findIndex((dpc) => dpc === currentDirectoryName);
+
+				const detail = directoryPathChunk.slice(currentPathIndex || 0).join('/');
+
+				return {
+					label: d.split('/').pop(),
+					detail,
+					fullPath: d
+				}
+			}
+			);
 
 		try {
 			const directory = await vscode.window.showQuickPick(
@@ -122,7 +130,7 @@ const activate = (context) => {
 
 			createFiles(
 				filename,
-				directory.detail,
+				directory.fullPath,
 				stylesheetExt.detail,
 			);
 
