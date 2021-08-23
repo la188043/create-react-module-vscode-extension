@@ -117,12 +117,11 @@ const activate = (context) => {
 				directory.detail,
 				stylesheetExt.detail,
 			);
+
+			vscode.window.showInformationMessage('Module successfully created!');
 		} catch (err) {
 			console.error({ err });
 		}
-
-		// Display a message box to the user
-		vscode.window.showInformationMessage('Hello World from React Create Module!');
 	});
 
 	context.subscriptions.push(disposable);
