@@ -1,5 +1,9 @@
 {
 	"name": "react-create-module",
+	"publisher": "SebastienCounen",
+	"repository": {
+		"url": "https://github.com/la188043/create-react-module-vscode-extension"
+	},
 	"displayName": "React Create Module",
 	"description": "Create react modulary component much faster",
 	"version": "0.0.1",
