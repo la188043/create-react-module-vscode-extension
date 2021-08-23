@@ -33,23 +33,30 @@ const createFiles = (filename, basePath, styleExtension) => {
 
 	const mapError = (err) => errors.push(err);
 
+	console.log({ path: `${basePath}/${filename}` });
+
+	// Create directory
+	fs.mkdirSync(
+		path.resolve(basePath, filename),
+	)
+
 	// React file
 	fs.writeFileSync(
-		`${basePath}/${filename}/${filename}.tsx`,
+		path.resolve(basePath, filename, `${filename}.tsx`),
 		getReactFileContent(filename, styleExtension || 'scss'),
 		mapError,
 	);
 
 	// Module index file
 	fs.writeFileSync(
-		`${basePath}/${filename}/index.ts`,
+		path.resolve(basePath, filename, 'index.tsx'),
 		getModuleIndexContent(filename),
 		mapError,
 	);
 
 	// Style module
 	fs.writeFileSync(
-		`${basePath}/${filename}/${filename}.module${styleExtension || '.scss'}`,
+		path.resolve(basePath, filename, `${filename}.module${styleExtension || '.scss'}`),
 		'',
 		mapError,
 	);
@@ -81,6 +88,7 @@ const activate = (context) => {
 
 			return;
 		}
+
 		const currentDirectoryPath = vscode.workspace.workspaceFolders[0].uri.path;
 
 		const directories = getDirectoriesRecursive(currentDirectoryPath);
