@@ -6,7 +6,7 @@
 	},
 	"displayName": "React Create Module",
 	"description": "Create react modulary component much faster",
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"engines": {
 		"vscode": "^1.59.0"
 	},

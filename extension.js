@@ -35,21 +35,21 @@ const createFiles = (filename, basePath, styleExtension) => {
 
 	// React file
 	fs.writeFileSync(
-		`${basePath}/${filename}.tsx`,
+		`${basePath}/${filename}/${filename}.tsx`,
 		getReactFileContent(filename, styleExtension || 'scss'),
 		mapError,
 	);
 
 	// Module index file
 	fs.writeFileSync(
-		`${basePath}/index.ts`,
+		`${basePath}/${filename}/index.ts`,
 		getModuleIndexContent(filename),
 		mapError,
 	);
 
 	// Style module
 	fs.writeFileSync(
-		`${basePath}/${filename}.module.${styleExtension || 'scss'}`,
+		`${basePath}/${filename}/${filename}.module${styleExtension || '.scss'}`,
 		'',
 		mapError,
 	);
@@ -76,10 +76,14 @@ const getDirectoriesRecursive = (srcpath) => {
  */
 const activate = (context) => {
 	let disposable = vscode.commands.registerCommand('react-create-module.createReactModule', async () => {
-		// const filterFunc = (path) => path.includes('');
-		// const filterFunc = () => true;
+		if (vscode.workspace.workspaceFolders === undefined) {
+			vscode.window.showErrorMessage('You must open the project folder/workspace to be able to use this extension');
 
-		const directories = getDirectoriesRecursive(__dirname);
+			return;
+		}
+		const currentDirectoryPath = vscode.workspace.workspaceFolders[0].uri.path;
+
+		const directories = getDirectoriesRecursive(currentDirectoryPath);
 		const filteredDirectories = directories
 			.filter((d) => !d.includes('node_modules'))
 			.map((d) => ({
@@ -113,12 +117,6 @@ const activate = (context) => {
 				directory.detail,
 				stylesheetExt.detail,
 			);
-
-			console.log({
-				directory,
-				filename,
-				stylesheetExt,
-			});
 		} catch (err) {
 			console.error({ err });
 		}
