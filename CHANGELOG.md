@@ -2,8 +2,10 @@
 
 All notable changes to the "react-create-module" extension will be documented in this file.
 
-Check [Keep a Changelog](http://keepachangelog.com/) for recommendations on how to structure this file.
-
 ## [Unreleased]
 
 - Initial release
+
+## [0.1.0] - 2022-02-15
+### Added
+- Right click support on explorer folder to avoid searching for right directory via command palette.
