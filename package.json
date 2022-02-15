@@ -2,11 +2,11 @@
 	"name": "react-create-module",
 	"publisher": "SebastienCounen",
 	"repository": {
-		"url": "https://github.com/la188043/create-react-module-vscode-extension"
+		"url": "https://github.com/sebastiencounen/create-react-module-vscode-extension"
 	},
 	"displayName": "React Create Module",
 	"description": "Create react modulary component much faster",
-	"version": "0.0.4",
+	"version": "0.1.0",
 	"engines": {
 		"vscode": "^1.59.0"
 	},
@@ -16,19 +16,25 @@
 	"activationEvents": [
 		"onCommand:react-create-module.createReactModule"
 	],
-	"main": "./extension.js",
+	"main": "./src/main.js",
 	"contributes": {
 		"commands": [
 			{
 				"command": "react-create-module.createReactModule",
 				"title": "Create React File/Module"
 			}
-		]
+		],
+		"menus": {
+			"explorer/context": [{
+					"when": "explorerResourceIsFolder",
+					"command": "react-create-module.createReactModule",
+					"group": "YourGroup@1"
+		}]
+	}
 	},
 	"scripts": {
 		"lint": "eslint .",
-		"pretest": "npm run lint",
-		"test": "node ./test/runTest.js"
+		"pretest": "npm run lint"
 	},
 	"devDependencies": {
 		"@types/vscode": "^1.59.0",
